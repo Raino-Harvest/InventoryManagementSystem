@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% include "header.html" %}
+
+
+{% block title %} Home {% endblock %}
+
+{% block body %} 
+
+<div class="container">
+    <div class="row">
+        <div class="col md-12">
+            <div class="jumbotron p-3 bg-grey ">
+
+                <h2>
+                    <b>
+                        Movements
+                    </b> 
+
+                    
+                <button type="button" class="btn btn-success float-right"
+                data-toggle="modal" data-target="#myModal">
+                     
+
+                    <b>
+                        Move
+                    </b>
+
+                    </button>
+                </h2>
+
+                    <table class="table table-hover table-dark table-striped">
+
+                        <tr>
+                            <th> Movement ID </th>
+                            <th> Timestamp </th>
+                            <th> From Location </th>
+                            <th> To Location </th>
+                            <th> Product ID </th>
+                            <th> Quantity </th>
+                            <th> Action </th>
+
+                        </tr>
+                           {% for row in movementsDetails %}
+                        <tr>
+                            <td>{{row.movementID}}</td>
+                            <td>{{row.timeStamp}}</td>
+                            <td>{{row.fromLocation}}</td>
+                            <td>{{row.toLocation}}</td>
+                            <td>{{row.productID}}</td>
+                            <td>{{row.quantity}}</td>
+
+                            <td>
+                                <a href="/editmovement/{{row.movementID}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.movementID}}">Edit</a>
+                            </td>
+                        </tr>
+
+
+                        <!--Edit Products-->
+<div id="modaledit{{row.movementID}}" class="modal fade" role="dialog">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title">Edit</h4>
+         </div>
+         <div class="modal-body">
+            <form action="{{url_for('editMovement')}}" method="POST">
+
+               <div class="form-group">
+                   <label>Movement ID:</label>
+                   <input type="number" class="form-control" name="movementID" value="{{row.movementID}}">
+                </div>
+
+               <div class="form-group">
+                  <label>From Location:</label>
+                  <input type="text" class="form-control" name="fromLocation" value="{{row.fromLocation}}">
+               </div>
+
+               <div class="form-group">
+                 <label>To Location:</label>
+                 <input type="text" class="form-control" name="toLocation" value="{{row.toLocation}}">
+              </div>
+
+              <div class="form-group">
+                 <label>Product ID:</label>
+                 <input type="text" class="form-control" name="productID" value="{{row.productID}}">
+              </div>
+
+              <div class="form-group">
+                 <label>Quantity:</label>
+                 <input type="number" class="form-control" name="quantity" value="{{row.quantity}}">
+              </div>
+
+               <div class="form-group">
+                  <button class="btn btn-primary" type="submit">Update</button>
+               </div>
+
+            </form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div> 
+</div>
+
+               {% endfor %}
+                    </table>
+            </div>
+
+
+
+
+<!--Add Products-->
+ 
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+       <div class="modal-content">
+
+          <div class="modal-header">
+             <h4 class="modal-title">Add Movement</h4>
+          </div>
+
+          <div class="modal-body">
+             <form action="" method="POST">
+
+                <div class="form-group">
+                   <label>Movement ID:</label>
+                   <input type="number" class="form-control" name="movementID" required="1">
+                </div>
+
+                <div class="form-group">
+                   <label>From Location:</label>
+                   <input type="text" class="form-control" name="fromLocation" >
+                </div>
+
+                <div class="form-group">
+                  <label>To Location:</label>
+                  <input type="text" class="form-control" name="toLocation" >
+               </div>
+
+               <div class="form-group">
+                  <label>Product ID:</label>
+                  <input type="text" class="form-control" name="productID" required="1">
+               </div>
+
+               <div class="form-group">
+                  <label>Quantity:</label>
+                  <input type="number" class="form-control" name="quantity" required="1">
+               </div>
+
+                <div class="form-group">
+                   <button class="btn btn-primary" type="submit">Add Movement</button>
+                </div>
+
+             </form>
+          </div>
+
+          <div class="modal-footer">
+             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+
+       </div>
+    </div> 
+</div>
+
+         </div>
+  
+     </div>
+  
+  
+ </div>
+
+{% endblock %}
