@@ -9,8 +9,11 @@ app.secret_key = "Secret Key"
 app.url_map.strict_slashes = False
 
 
-#SqlAlchemy Database Configuration With Mysql
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:connectuser@localhost/inventorydatabase'
+#SqlAlchemy Database Configuration With Mysql (Used while development using localhost server)
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:<password>@localhost/inventorydatabase'
+
+#SqlAlchemy Database Configuration With Sqlite3
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///inventoryDatabase.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -37,7 +40,7 @@ class Locations(db.Model):
 class Movements(db.Model):
 
     movementID = db.Column(db.Integer, primary_key = True)
-    timeStamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timeStamp = db.Column(db.String(100))
     fromLocation = db.Column(db.String(100))
     toLocation = db.Column(db.String(100))
     productID  = db.Column(db.String(100))
@@ -141,16 +144,17 @@ def editLocation():
 #MOVEMENTS
 @app.route("/movements", methods=['GET', 'POST', 'PUT'])
 def movements():
+    
     if request.method == 'POST':
-          
-        movementId = request.form['movementID']
+
+        movementID = request.form['movementID']
         timeStamp = datetime.now().strftime("%Y-%m-%d %H:%M")
         fromLocation = request.form['fromLocation']
         toLocation = request.form['toLocation']
         productID = request.form['productID']
         quantity = request.form['quantity']
 
-        newmovement = Movements(movementId,timeStamp,fromLocation,toLocation,productID,quantity)
+        newmovement = Movements(movementID,timeStamp,fromLocation,toLocation,productID,quantity)
 
         db.session.add(newmovement)
         db.session.commit()
