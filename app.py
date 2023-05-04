@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from collections import defaultdict,OrderedDict
+from collections import defaultdict
 from datetime import datetime
 
 
@@ -215,10 +215,9 @@ def report():
                 balancedDict[productID][toLocation]["quantity"] = 0
             balancedDict[productID][toLocation]["quantity"] += quantity
 
-    movements = OrderedDict(sorted(balancedDict.items()))
     print(movements)
 
-    return render_template("report.html", movements=movements)
+    return render_template("report.html", movements=balancedDict)
 
 
 #MAIN
