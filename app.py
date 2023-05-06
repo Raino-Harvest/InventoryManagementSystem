@@ -76,13 +76,11 @@ def products():
         productName = request.form['productName']
 
         newProduct = Products(productID,productName)
-
         db.session.add(newProduct)
         db.session.commit()
-        addedProduct = Products.query.get_or_404(newProduct.productID)
+
         productsDetails = Products.query.all()
         return redirect(url_for('products'))
-        #return {"locationID": addedLocation.locationID, "location": addedLocation.location} #,"product": added_location.product_id, "available_quantity": added_location.available_quantity}
     
     productsDetails = Products.query.all()
     return render_template('products.html', productsDetails = productsDetails)
@@ -114,9 +112,9 @@ def locations():
         location = request.form['location']
 
         newLocation = Locations(locationId,location)
-
         db.session.add(newLocation)
         db.session.commit()
+
         locationsDetails = Locations.query.all()
         return redirect(url_for('locations'))
         
@@ -154,10 +152,10 @@ def movements():
         productID = request.form['productID']
         quantity = request.form['quantity']
 
-        newmovement = Movements(movementID,timeStamp,fromLocation,toLocation,productID,quantity)
-
-        db.session.add(newmovement)
+        newMovement = Movements(movementID,timeStamp,fromLocation,toLocation,productID,quantity)
+        db.session.add(newMovement)
         db.session.commit()
+
         movementsDetails = Movements.query.all()
         return redirect(url_for('movements'))
     
@@ -218,8 +216,6 @@ def report():
             if "quantity" not in balancedDict[productID][toLocation]:
                 balancedDict[productID][toLocation]["quantity"] = 0
             balancedDict[productID][toLocation]["quantity"] += quantity
-
-    print(movements)
 
     return render_template("report.html", movements=balancedDict)
 
